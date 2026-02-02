@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IT Helpdesk Chatbot</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --accent: #0b74de;
+      --text: #0f1724;
+      --muted: #6b7280;
+      --btn-bg: #e6eefc;
+      --btn-hover: #d0e4fb;
+    }
+    * { box-sizing: border-box; font-family: Inter, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg,#eef2f7 0%, #f9fbfd 100%);
+      color: var(--text);
+    }
+    .app {
+      width: 480px;
+      max-width: 94%;
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(16,24,40,0.08);
+      padding: 20px;
+    }
+    .header {
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .logo {
+      width:46px;height:46px;border-radius:10px;
+      background:linear-gradient(135deg,var(--accent),#2aa2ff);
+      display:flex;align-items:center;justify-content:center;color:white;font-weight:700;
+      box-shadow: 0 6px 18px rgba(11,116,222,0.12);
+      font-size:20px;
+    }
+    h1 { font-size:20px; margin:0; }
+    p.lead { margin:6px 0 0; color:var(--muted); font-size:13px; }
+
+    .display {
+      margin-top:18px;
+      background: var(--bg);
+      border-radius:8px;
+      padding:14px;
+      min-height:110px;
+      color:var(--text);
+      line-height:1.45;
+      white-space:pre-wrap;
+    }
+
+    .buttons {
+      margin-top:14px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .btn {
+      border: none;
+      background: var(--btn-bg);
+      padding:10px 12px;
+      border-radius:8px;
+      text-align:left;
+      font-size:15px;
+      cursor:pointer;
+      transition: background .12s, transform .06s;
+      color: var(--text);
+    }
+    .btn:hover { background: var(--btn-hover); transform: translateY(-1px); }
+    .btn.full { width:100%; }
+
+    .actions {
+      margin-top:12px;
+      display:flex;
+      gap:8px;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .muted { color:var(--muted); font-size:13px; }
+    .small { font-size:13px; color:var(--muted); margin-top:10px; }
+
+    .disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    footer { margin-top:12px; font-size:12px; color:var(--muted); text-align:center; }
+  </style>
+</head>
+<body>
+  <div class="app" role="application" aria-labelledby="title">
+    <div class="header">
+      <div class="logo">IT</div>
+      <div>
+        <h1 id="title">IT Helpdesk Chatbot</h1>
+        <p class="lead">Menu-driven support — choose an option below.</p>
+      </div>
+    </div>
+
+    <div id="display" class="display" aria-live="polite">
+Welcome to IT Helpdesk 👋
+Please choose how I can help you today:
+    </div>
+
+    <div id="buttons" class="buttons" role="group" aria-label="chatbot options">
+      <!-- Buttons inserted by JavaScript -->
+    </div>
+
+    <div class="small">Use <strong>Main Menu</strong> anytime to return, or <strong>Exit</strong> to end the session.</div>
+    <footer>Built with HTML/JS — ready for GitHub Pages</footer>
+  </div>
+
+  <script>
+    // --- Core UI elements
+    const display = document.getElementById('display');
+    const buttonsDiv = document.getElementById('buttons');
+
+    // --- Utility: replace display text
+    function setDisplay(text) {
+      display.textContent = text;
+    }
+
+    // --- Clear buttons
+    function clearButtons() {
+      buttonsDiv.innerHTML = '';
+    }
+
+    // --- Create a button helper
+    function makeButton(label, onClick, extraClass = '') {
+      const btn = document.createElement('button');
+      btn.className = 'btn full ' + (extraClass || '');
+      btn.textContent = label;
+      btn.type = 'button';
+      btn.onclick = onClick;
+      return btn;
+    }
+
+    // --- Navigation Buttons (Main Menu + Exit)
+    function addNavigation() {
+      // Main Menu
+      buttonsDiv.appendChild(makeButton('Main Menu', () => showMainMenu()));
+      // Exit
+      buttonsDiv.appendChild(makeButton('Exit', () => exitChatbot()));
+    }
+
+    // --- Main menu
+    function showMainMenu() {
+      setDisplay("Welcome to IT Helpdesk 👋\nPlease choose how I can help you today:");
+      clearButtons();
+
+      buttonsDiv.appendChild(makeButton('Password Reset', () => passwordReset()));
+      buttonsDiv.appendChild(makeButton('Software Installation', () => softwareInstallation()));
+      buttonsDiv.appendChild(makeButton('Internet / Network Issue', () => internetIssue()));
+      buttonsDiv.appendChild(makeButton('Speak to Human', () => speakToHuman()));
+      buttonsDiv.appendChild(makeButton('Exit', () => exitChatbot()));
+    }
+
+    // --- Password Reset flow
+    function passwordReset() {
+      clearButtons();
+      setDisplay(
+`PASSWORD RESET
+
+1. Use the self-service password reset portal
+2. Contact IT support for manual reset`
+      );
+      buttonsDiv.appendChild(makeButton('Self-Service Reset', () => selfServiceReset()));
+      buttonsDiv.appendChild(makeButton('Contact IT Support', () => contactIt()));
+      addNavigation();
+    }
+
+    function selfServiceReset() {
+      clearButtons();
+      setDisplay(
+`Self-Service Password Reset
+
+• Visit: https://passwordreset.company.com
+• Enter your employee ID
+• Follow the instructions sent to your email`
+      );
+      addNavigation();
+    }
+
+    function contactIt() {
+      clearButtons();
+      setDisplay(
+`Contact IT Support
+
+• Raise a ticket through the IT portal
+• Or email: it-support@company.com`
+      );
+      addNavigation();
+    }
+
+    // --- Software Installation
+    function softwareInstallation() {
+      clearButtons();
+      setDisplay(
+`SOFTWARE INSTALLATION
+
+• Approved software can be installed from the company portal
+• New software requires IT approval`
+      );
+      addNavigation();
+    }
+
+    // --- Internet Issue
+    function internetIssue() {
+      clearButtons();
+      setDisplay(
+`INTERNET / NETWORK ISSUE
+
+• Restart router/modem
+• Check Wi-Fi or network cable
+• Contact IT if issue persists`
+      );
+      addNavigation();
+    }
+
+    // --- Speak to Human
+    function speakToHuman() {
+      clearButtons();
+      setDisplay(
+`SPEAK TO HUMAN
+
+• A support ticket will be created
+• An IT agent will contact you shortly`
+      );
+      addNavigation();
+    }
+
+    // --- Exit behavior
+    function exitChatbot() {
+      clearButtons();
+      setDisplay("Thank you for using IT Helpdesk Chatbot.\nGoodbye!");
+      // Show two disabled buttons (cosmetic) so UI doesn't feel broken
+      const disabledMain = makeButton('Main Menu', () => {}, 'disabled');
+      const disabledExit = makeButton('Exit', () => {}, 'disabled');
+      disabledMain.classList.add('disabled');
+      disabledExit.classList.add('disabled');
+      buttonsDiv.appendChild(disabledMain);
+      buttonsDiv.appendChild(disabledExit);
+      // Optionally grey out the UI
+      document.querySelector('.app').style.opacity = '0.95';
+    }
+
+    // --- Initialize
+    showMainMenu();
+  </script>
+</body>
+</html>
