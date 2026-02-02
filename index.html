@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IT Helpdesk Chatbot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .chatbot {
+      width: 420px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+
+    h2 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    #display {
+      background: #eef2f5;
+      padding: 15px;
+      border-radius: 6px;
+      min-height: 120px;
+      white-space: pre-line;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: none;
+      border-radius: 5px;
+      background: #007bff;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .secondary {
+      background: #6c757d;
+    }
+
+    .secondary:hover {
+      background: #545b62;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="chatbot">
+    <h2>IT Helpdesk Chatbot</h2>
+
+    <div id="display"></div>
+
+    <div id="buttons"></div>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+    const buttons = document.getElementById("buttons");
+
+    function clearButtons() {
+      buttons.innerHTML = "";
+    }
+
+    function addButton(text, action, secondary=false) {
+      const btn = document.createElement("button");
+      btn.innerText = text;
+      if (secondary) btn.classList.add("secondary");
+      btn.onclick = action;
+      buttons.appendChild(btn);
+    }
+
+    function showMainMenu() {
+      display.innerText =
+        "Welcome to IT Helpdesk 👋\n" +
+        "Please choose how I can help you today:";
+
+      clearButtons();
+      addButton("Password Reset", passwordReset);
+      addButton("Software Installation", softwareInstallation);
+      addButton("Internet / Network Issue", internetIssue);
+      addButton("Speak to Human", speakToHuman);
+      addButton("Exit", exitChatbot, true);
+    }
+
+    function passwordReset() {
+      display.innerText =
+        "PASSWORD RESET\n\n" +
+        "1. Use the self-service password reset portal\n" +
+        "2. Contact IT support for manual reset";
+
+      clearButtons();
+      addButton("Self-Service Reset", selfServiceReset);
+      addButton("Contact IT Support", contactIT);
+      addButton("Main Menu", showMainMenu, true);
+      addButton("Exit", exitChatbot, true);
+    }
+
+    function selfServiceReset() {
+      display.innerText =
+        "Self-Service Password Reset\n\n" +
+        "• Visit: https://passwordreset.company.com\n" +
+        "• Enter your employee ID\n" +
+        "• Follow the instructions sent to your email";
+
+      clearButtons();
+      addButton("Main Menu", showMainMenu, true);
+      addButton("Exit", exitChatbot, true);
+    }
+
+    function contactIT() {
+      display.innerText =
+        "Contact IT Support\n\n" +
+        "• Raise a ticket through the IT portal\n" +
+        "• Or email: it-support@company.com";
+
+      clearButtons();
+      addButton("Main Menu", showMainMenu, true);
+      addButton("Exit", exitChatbot, true);
+    }
+
+    function softwareInstallation() {
+      display.innerText =
+        "SOFTWARE INSTALLATION\n\n" +
+        "• Approved software can be installed from the company portal\n" +
+        "• New software requires IT approval";
+
+      clearButtons();
+      addButton("Main Menu", showMainMenu, true);
+      addButton("Exit", exitChatbot, true);
+    }
+
+    function internetIssue() {
+      display.innerText =
+        "INTERNET / NETWORK ISSUE\n\n" +
+        "• Restart router/modem\n" +
+        "• Check Wi-Fi or network cable\n" +
+        "• Contact IT if issue persists";
+
+      clearButtons();
+      addButton("Main Menu", showMainMenu, true);
+      addButton("Exit", exitChatbot, true);
+    }
+
+    function speakToHuman() {
+      display.innerText =
+        "SPEAK TO HUMAN\n\n" +
+        "• A support ticket will be created\n" +
+        "• An IT agent will contact you shortly";
+
+      clearButtons();
+      addButton("Main Menu", showMainMenu, true);
+      addButton("Exit", exitChatbot, true);
+    }
+
+    function exitChatbot() {
+      display.innerText =
+        "Thank you for using IT Helpdesk Chatbot.\nGoodbye!";
+
+      clearButtons();
+    }
+
+    // Start chatbot
+    showMainMenu();
+  </script>
+
+</body>
+</html>
